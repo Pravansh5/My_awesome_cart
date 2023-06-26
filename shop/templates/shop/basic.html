@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,12 +7,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'shop/review.css' %}"/> 
     <title>{% block title%}
         
         {% endblock %}</title>
       <style>
+        {% comment %} .checked {
+          color: orange;
+        } {% endcomment %}
+        body{
+          overflow-x: hidden;
+        }
+        .footer{
+          width :100vw;
+          height :5rem;
+          margin-top : auto;
+
+        }
+        .footer  {
+          color: #fff;
+          font-size: 1rem;
+          text-align: center;
+          text-transform
+        }
+        body{
+          display :flex;
+          flex-direction: column;
+          height : 100vh;
+
+          nav{
+            position:fixed;
+          }
+        }
         {% block css%}
         
         {% endblock %}
@@ -21,14 +51,14 @@
     {{context}}
   {% load static %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/shop">My Awesome Cart</a>
+  <a class="navbar-brand" href="/shop" style="color: orange">AvantiKart</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
@@ -48,30 +78,143 @@
       </li>
       
     </ul>
-    <form method='get' action='/shop/search/' class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search' id='search'>
+    <form method="get" action="/shop/search/" id="search-form" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
-    <button type="button" class="btn btn-secondary mx-2" id= "popcart"  data-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
+    {% if user.is_authenticated %}
+            <ul class="navbar-nav mr-2">
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="right" data-toggle="dropdown"> Welcome {{request.user}}</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item"  href="/shop/logout">Logout</a>
+              
+                      </div>
+                    </li>
+                    </ul>
+                    {% comment %} </div> {% endcomment %}
+            {% comment %} you are logged in as {{request.user}} {% endcomment %}
+            
+              {% else %}
+              <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#loginModal">
+                Login
+                </button>
+                
+                <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#signupModal">
+                SignUp
+                </button>
+              {% endif %}
+    <button type="button" class="btn btn-secondary mx-2" id= "popcart"  data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+    sagittis lacus vel augue laoreet rutrum faucibus.">
       Cart(<span id="cart">0</span>)
       
+    
     </button>
-    </button>
+    {% comment %} <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">
+  Popover on bottom
+</button> {% endcomment %}
   </div>
 </nav>
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupModalTitle">SignUp Here</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action= "/shop/signup" method="post">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Choose a unique username (lowercase and alphanumeric)" required>
+  </div>
+  <div class="form-group">
+    <label for="fname">First Name</label>
+    <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter Your First Name" required>
+  </div>
+  <div class="form-group">
+    <label for="lname">Last Name</label>
+    <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter Your Last Name" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+  </div>
+  <div class="form-group">
+    <label for="pass1">Choose a password</label>
+    <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Choose Your Password" required>
+  </div>
+  <div class="form-group">
+    <label for="pass2">Confirm Password</label>
+    <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Enter your password again" required>
+  </div>
+ 
+
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
 
 {% block body %}          {% endblock %}
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalTitle">Login Here</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/shop/login" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="loginusername" name="loginusername" placeholder="Choose a unique username" required>
+  </div>
+  <div class="form-group">
+    <label for="pass">Enter your password </label>
+    <input type="password" class="form-control" id="loginpassword" name="loginpassword" placeholder="Enter your password " required>
+  </div>
+ 
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+
+
+
 
 
  <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="{% static 'shop/review.js' %}"></script>
+    <script>
+      $('.dropdown-item').click(function() {
+      localStorage.clear()})
+      
+    </script>
     {% block js %}
         
         {% endblock %}
-    
+        
+       
       </body>
 </html>

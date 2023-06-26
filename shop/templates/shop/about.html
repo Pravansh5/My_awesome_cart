@@ -4,22 +4,29 @@
        About Us
         {% endblock %}
 {% block body %}  
+
         <main role="main">
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
           <div class="container">
-            <h1 class="display-3">My Awesome Cart</h1>
-            <p>My Awesome Cart Private Limited is an Indian e-commerce company, headquartered in Bengaluru, and incorporated in Singapore as a private limited company. The company initially focused on online book sales before expanding into other product categories such as consumer electronics, fashion, home essentials, groceries, and lifestyle products.
+            <h1 class="display-3" style= "font-size: 34px">Welcome to </h1>
+            <h1 class="display-3" style="color: orange">AvantiKart</h1>
 
-                The service competes primarily with Amazon's Indian subsidiary and domestic rival Snapdeal.[5][6] As of March 2017, MAC held a 39.5% market share of India's e-commerce industry.[7] MAC has a dominant position in the apparel segment, bolstered by its acquisition of Myntra, and was described as being "neck and neck" with Amazon in the sale of electronics and mobile phones.[8] MAC also owns PhonePe, a mobile payments service based on UPI.
-                
-                In August 2018, American retail chain Walmart acquired a 77% controlling stake in MAC for US$16 billion, valuing MAC at around US$20 billion.[9] MAC is valued at $37.6 billion as of 2022.[10] It is planning to go public through a listing in the United States of America in 2023.[11]</p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+            <br>
+              <p   style= "font-size: 18px" >
+                At AvantiKart, we strive to provide you with an exceptional online shopping experience. Whether you're searching for the latest fashion trends, electronics, home decor, or unique gifts, we've got you covered. Our mission is to bring you a wide range of high-quality products, exceptional customer service, and a seamless shopping journey right from the comfort of your own home.<br><br>
+                Here at AvantiKart, we understand that your time is valuable, and that's why we've created a user-friendly platform that allows you to browse and shop with ease. Our website is designed to be intuitive and visually appealing, ensuring that you find what you're looking for quickly and effortlessly.<br><br>
+                Customer satisfaction is our top priority. We are committed to providing exceptional customer service every step of the way. Our knowledgeable and friendly support team is here to assist you with any questions or concerns you may have. From product inquiries to shipping updates, we're always ready to lend a helping hand and ensure your shopping experience is nothing short of excellent.To make your shopping experience even more enjoyable, we offer secure payment options, fast shipping, and hassle-free returns. We want you to shop with confidence, knowing that your personal information is protected and your orders will arrive in a timely manner. Should you ever need to return or exchange a product, our dedicated team will guide you through the process smoothly. Thank you for choosing AvantiKart. We value your trust and are dedicated to providing you with an exceptional online shopping experience. Whether you're a new customer or a returning one, we look forward to serving you and exceeding your expectations.
+            <br><br>
+            Happy shopping!
+            <br>
+            AvantiKart Team
+          </p>
           </div>
         </div>
   
-        <div class="container">
+        {% comment %} <div class="container">
           <!-- Example row of columns -->
           <div class="row">
             <div class="col-md-4">
@@ -41,7 +48,45 @@
   
           <hr>
   
-        </div> <!-- /container -->
+        </div> {% endcomment %}
+        <!-- /container --> 
   
       </main>
+
+      <footer class="footer text-center" style="background-color: orange;">
+        <div>
+        <br>
+          <h5 style="color: whitesmoke;">All rights reservered. | nitai.onrender.com</h5>
+        <br>
+        </div>
+      </footer>
        {% endblock %}
+
+       {% block js %}
+       <script>
+        var sum = 0;
+        var totalPrice = 0;
+        if (localStorage.getItem('cart')==null){
+          var cart ={};
+
+        }
+        else{
+          cart= JSON.parse(localStorage.getItem('cart'));
+          for (item in cart) {
+            let name = cart[item][1];
+            let qty = cart[item][0];
+            let itemPrice = cart[item][2];
+            sum = sum + qty;
+            totalPrice = totalPrice + qty * itemPrice;
+            mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${name}
+                        <span class="badge badge-primary badge-pill">${qty}</span>
+                    </li>`
+            $('#items').append(mystr);
+        }
+        document.getElementById('cart').innerHTML = sum;
+        }
+      
+      
+    </script>
+       {% endblock  %}

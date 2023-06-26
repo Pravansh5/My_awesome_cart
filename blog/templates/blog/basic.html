@@ -12,6 +12,32 @@
         
         {% endblock %}</title>
       <style>
+        
+        .footer{
+          width:100rem;
+
+          height :5rem;
+          margin-top : auto;
+          left: 0px;
+          right: 0px;
+          
+
+        }
+       
+
+        .footer  {
+          color: #fff;
+          font-size: 1rem;
+          text-align: center;
+          text-transform
+        }
+        body{
+          display :flex;
+          flex-direction: column;
+          height : 100vh;
+        }
+
+        
         {% block css%}
         
         {% endblock %}
@@ -22,14 +48,14 @@
     {{context}}
   {% load static %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/shop">My Awesome Cart</a>
+  <a class="navbar-brand" href="/shop" style="color: orange">AvantiKart</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
@@ -62,7 +88,13 @@
 </nav>
 
 {% block body %}          {% endblock %}
-
+<footer class="footer-expanded-xfbml text-center  " style="background-color: orange;">
+  <div>
+  <br>
+    <h5 style="color: whitesmoke;">All rights reservered. | nitai.onrender.com</h5>
+  <br>
+  </div>
+</footer>
 
  <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -73,6 +105,8 @@
     {% block js %}
         
         {% endblock %}
-    
+        
+
+
       </body>
 </html>

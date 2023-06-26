@@ -108,6 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -137,4 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
+
+KEY="rzp_test_xv4WlbBrgONmBf"
+SECRET="hlidterSNr98bAeYzVk3O4fR"
 

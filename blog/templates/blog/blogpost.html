@@ -2,9 +2,9 @@
 
 
 {% block body %}
-<div class="container">
-<div class="row g-5 mt-4" >
-    <div class="col-md-8">
+{% comment %} <div class="container">  {% endcomment %}
+<div class="g-5 mt-4 " >
+    <div class="col-sm">
       <h3 class="pb-4 mb-4 fst-italic border-bottom">
         {{post.title}}
       </h3>
@@ -47,9 +47,42 @@
       </div>
     </div>
   </div>
-  my_prev_post_id=my_post.post_id-1
-  my_next_post_id=my_post.post_id+1
+ 
+  
+{% comment %} </div> {% endcomment %}
+<div>
   <a href="{{my_prev_post_id}}" class="stretched-link">Continue reading prev blog</a>
+  <br>
   <a href="{{my_next_post_id}}" class="stretched-link">Continue reading next blog</a>
-</div>
+
+ </div>
+
 {% endblock %}
+{% block js %}
+       <script>
+        var sum = 0;
+        var totalPrice = 0;
+        if (localStorage.getItem('cart')==null){
+          var cart ={};
+
+        }
+        else{
+          cart= JSON.parse(localStorage.getItem('cart'));
+          for (item in cart) {
+            let name = cart[item][1];
+            let qty = cart[item][0];
+            let itemPrice = cart[item][2];
+            sum = sum + qty;
+            totalPrice = totalPrice + qty * itemPrice;
+            mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${name}
+                        <span class="badge badge-primary badge-pill">${qty}</span>
+                    </li>`
+            $('#items').append(mystr);
+        }
+        document.getElementById('cart').innerHTML = sum;
+        }
+      
+      
+    </script>
+       {% endblock  %}
