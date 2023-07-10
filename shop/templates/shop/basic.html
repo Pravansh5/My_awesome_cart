@@ -15,24 +15,35 @@
         
         {% endblock %}</title>
       <style>
-        {% comment %} .checked {
-          color: orange;
-        } {% endcomment %}
+       
         body{
           overflow-x: hidden;
         }
-        .footer{
-          width :100vw;
-          height :5rem;
-          margin-top : auto;
+        .image-style1 {
+          margin: 20px;
+          padding: 20px;
+        }
+        {% comment %} .img.fluid {
+          margin-left: 10px;
+        } {% endcomment %}
+        
 
-        }
-        .footer  {
+        #submit_review{
+          display: inline-block;
+          border-radius: 25%;
+          width: 75px;
+          height: 40px;
+          background-color: #ff9800;
           color: #fff;
-          font-size: 1rem;
           text-align: center;
-          text-transform
+          line-height: 40px;
         }
+
+       . col-md-6{
+        margin-left: 20px;
+
+       }
+
         body{
           display :flex;
           flex-direction: column;
@@ -40,6 +51,32 @@
 
           nav{
             position:fixed;
+          }
+
+          
+          .table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          .header-cell {
+            background-color: #ff9800;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+          }
+          
+          .table td {
+            padding: 10px;
+          }
+          
+          .table tbody tr:nth-child(even) td {
+            background-color: #f2f2f2;
+          }
+          
+          .table tbody tr:hover td {
+            background-color: #ffedcc;
           }
         }
         {% block css%}
@@ -83,17 +120,16 @@
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     {% if user.is_authenticated %}
-            <ul class="navbar-nav mr-2">
-              <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="right" data-toggle="dropdown"> Welcome {{request.user}}</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item"  href="/shop/logout">Logout</a>
-              
-                      </div>
-                    </li>
-                    </ul>
-                    {% comment %} </div> {% endcomment %}
-            {% comment %} you are logged in as {{request.user}} {% endcomment %}
+    <ul class="navbar-nav mr-2">
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href='#' id="navbarDropdown" role="button" data-toggle="dropdown"> Welcome {{request.user}}</a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/shop/logout">Logout</a>
+      
+              </div>
+            </li>
+            </ul>
+
             
               {% else %}
               <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#loginModal">
@@ -110,10 +146,7 @@
       
     
     </button>
-    {% comment %} <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-sagittis lacus vel augue laoreet rutrum faucibus.">
-  Popover on bottom
-</button> {% endcomment %}
+    
   </div>
 </nav>
 <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
@@ -141,15 +174,15 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
   </div>
   <div class="form-group">
     <label for="email">Email address</label>
-    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+    <input type="email" class="form-control" id="EMAIL" name="EMAIL" placeholder="name@example.com" required>
   </div>
   <div class="form-group">
     <label for="pass1">Choose a password</label>
-    <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Choose Your Password" required>
+    <input type="password" class="form-control" id="pass1" name="pass1" autocomplete="on" placeholder="Choose Your Password" required>
   </div>
   <div class="form-group">
     <label for="pass2">Confirm Password</label>
-    <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Enter your password again" required>
+    <input type="password" class="form-control" id="pass2" name="pass2" autocomplete="on" placeholder="Enter your password again" required>
   </div>
  
 
@@ -162,8 +195,6 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
     </div>
   </div>
 </div>
-
-{% block body %}          {% endblock %}
 <!-- Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
   <div class="modal-dialog">
@@ -179,17 +210,29 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
           {% csrf_token %}
           <div class="form-group">
     <label for="username">Username</label>
-    <input type="text" class="form-control" id="loginusername" name="loginusername" placeholder="Choose a unique username" required>
+    <input type="text" class="form-control" id="loginusername" name="loginusername" placeholder="Enter your username" required>
   </div>
   <div class="form-group">
     <label for="pass">Enter your password </label>
-    <input type="password" class="form-control" id="loginpassword" name="loginpassword" placeholder="Enter your password " required>
+    <input type="password" class="form-control" id="loginpassword" name="loginpassword" placeholder="Enter your password " autocomplete="on" required>
   </div>
  
         <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </div>
+</div>
+</div>
+</div>
+{% block body %}          {% endblock %}
 
+
+
+
+<!-- load jQuery 1.3.2 -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+var jQuery_3_6_3 = $.noConflict(true);
+</script>
 
 
 
@@ -202,15 +245,12 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     
-    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="{% static 'shop/review.js' %}"></script>
-    <script>
+   <script>
       $('.dropdown-item').click(function() {
       localStorage.clear()})
       
-    </script>
+    </script> 
+    
     {% block js %}
         
         {% endblock %}

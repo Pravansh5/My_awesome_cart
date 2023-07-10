@@ -35,51 +35,52 @@
 {% endblock %}
 {% block js %}
 <script>
-$('#trackerForm').submit(function(event) {
-    $('#items').empty();
+jQuery_3_6_3('#trackerForm').submit(function(event) {
+    jQuery_3_6_3('#items').empty();
     var formData = {
-        'orderId': $('input[name=orderId]').val(),
-        'Email': $('input[name=Email]').val(),
-        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+        'orderId': jQuery_3_6_3('input[name=orderId]').val(),
+        'Email': jQuery_3_6_3('input[name=Email]').val(),
+        'csrfmiddlewaretoken': jQuery_3_6_3('input[name=csrfmiddlewaretoken]').val()
     };
-    $.ajax({
+    jQuery_3_6_3.ajax({
             type: 'POST',
             url: '/shop/tracker/',
             data: formData,
             encode: true
         })
         .done(function(data) {
-            $('#citems').empty();
-            console.log(data)
+            jQuery_3_6_3('#citems').empty();
             data = JSON.parse(data);
             if (data['status'] == 'success') {
                 updates = data['updates'];
+                
                 for (i = 0; i < updates.length; i++) {
                     let text = updates[i]['text'];
                     let time = updates[i]['time'];
+                    console.log(text)
+                    console.log(time)
                     mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
                     ${text}
                     <span class="badge badge-primary badge-pill">${time}</span>
                 </li>`
-                    $('#items').append(mystr);
+                    jQuery_3_6_3('#items').append(mystr);
                 }
                 // Fill in the order details
-                cart = JSON.parse(data['itemsJson']);
-                console.log(cart);
-                for (item in cart) {
-                    let name = cart[item][1];
-                    let qty = cart[item][0];
+                pcart = JSON.parse(data['itemsJson']);
+                for (item in pcart) {
+                    let name = pcart[item][1];
+                    let qty = pcart[item][0];
                     mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
                     ${name}
                     <span class="badge badge-primary badge-pill">${qty}</span>
                 </li>`
-                    $('#citems').append(mystr);
+                    jQuery_3_6_3('#citems').append(mystr);
                 }
             } else {
                 mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
                     Sorry, We are not able to fetch this order id and email. Make sure to type correct order Id and email</li>`
-                $('#items').append(mystr);
-                $('#citems').append(mystr);
+                jQuery_3_6_3('#items').append(mystr);
+                jQuery_3_6_3('#citems').append(mystr);
             }
         });
     event.preventDefault();
@@ -101,11 +102,11 @@ $('#trackerForm').submit(function(event) {
         let itemPrice = cart[item][2];
         sum = sum + qty;
         totalPrice = totalPrice + qty * itemPrice;
-        mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${name}
-                    <span class="badge badge-primary badge-pill">${qty}</span>
+        {% comment %} mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    jQuery_3_6_3{name}
+                    <span class="badge badge-primary badge-pill">jQuery_3_6_3{qty}</span>
                 </li>`
-        $('#items').append(mystr);
+        jQuery_3_6_3('#items').append(mystr); {% endcomment %}
     }
     document.getElementById('cart').innerHTML = sum;
     }
