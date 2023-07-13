@@ -1,29 +1,37 @@
 
 {% extends 'shop/basic.html' %}
 {% block title %}Make Payment{% endblock %}
+{% block css%}
+<style>
+    
+
+    .card {
+      align-items: center;
+      
+    }
+  </style>  
+{% endblock %}
 {% block body %}
-<div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
+
+<div class="card " style="width: 20rem; margin: 0 auto;">
+    <img src="/static/shop/e.png" style="background-color:green;" class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <h2 class="card-title text-center" style="color:orange;">AvantiKart </h2>
+      <h5 class="card-title text-center" style="color:grey;">E-Payment Gateway</h5>
+      {% comment %} <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> {% endcomment %}
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">An item</li>
-      <li class="list-group-item">A second item</li>
-      <li class="list-group-item">A third item</li>
-    </ul>
+    
     <div class="card-body">
         <form action="" method="">
-            {% comment %} {% csrf_token %} {% endcomment %}
-            <input type="hidden" value="{{Id}}" name='order_id' id='order_id'>
-            <button id="rzp-button1" >Pay with Razorpay</button>
+          {% csrf_token %}
+            <input type="hidden" value="{{cart.order_id}}" name='order_id' id='order_id'>
+            <button type="button" id="rzp-button1" class="btn btn-primary text-center">Make Payment</button><button type="button" class="btn btn-danger" id="cancel_payment" style="margin-left: 7px;">Cancel Payment</button>
+            {% comment %} <button id="rzp-button1" >Pay with Razorpay</button> {% endcomment %}
         </form>
-        {% comment %} <button id="rzp-button1" type="submit">Pay with Razorpay</button> {% endcomment %}
-      <a href="" class="card-link">Cancel Payment</a>
+      
     </div>
   </div>
-  {% comment %} <button id="rzp-button1" type="submit">Pay with Razorpay</button> {% endcomment %}
+  
 {% endblock  %}
 
 {% block js %}
@@ -34,15 +42,12 @@ var options = {
     "currency": "INR",
     "name": "Nitai",
     "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
+    "image": "/static/shop/e.png",
     "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": function (response){
 
-        window.location.href =`http://127.0.0.1:8000/shop/checkout/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${response.razorpay_signature}`
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
-        console.log(response.razorpay_payment_id)
+        window.location.href =`/shop/checkout/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${response.razorpay_signature}`
+        
     },
     "prefill": {
         "name": "Gaurav Kumar",
@@ -73,6 +78,64 @@ document.getElementById('rzp-button1').onclick = function(e){
 
 
 </script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<script>
+  console.log('hare krishna')
+  jQuery_3_6_3(document).ready(function() {
+    jQuery_3_6_3('#cancel_payment').click(function(e) {
+     // Prevent the default form submission or button behavior
+     e.preventDefault();
+
+      // Perform the AJAX request
+      jQuery_3_6_3.ajax({
+        type: 'POST',
+        url: '/shop/cancel/',
+        data: {
+          csrfmiddlewaretoken: jQuery_3_6_3('input[name=csrfmiddlewaretoken]').val(),
+          order_id: $('input[name=order_id]').val()
+        },
+        success: function(response) {
+          // Handle the successful response from the server
+          if (status="success"){
+          window.location.href='/shop';
+          }
+        },
+        error: function(xhr, textStatus, error) {
+          // Handle any errors that occurred during the AJAX request
+          console.log(error);
+
+        } 
+      });
+    });
+  });
+  
+</script>
+
+{% comment %} <script src="https://checkout.razorpay.com/v1/checkout.js"></script> {% endcomment %}
+<script>
+  var sum = 0;
+  var totalPrice = 0;
+  if (localStorage.getItem('cart')==null){
+    var cart ={};
+
+  }
+  else{
+    cart= JSON.parse(localStorage.getItem('cart'));
+    for (item in cart) {
+      let name = cart[item][1];
+      let qty = cart[item][0];
+      let itemPrice = cart[item][2];
+      sum = sum + qty;
+      totalPrice = totalPrice + qty * itemPrice;
+      mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${name}
+                  <span class="badge badge-primary badge-pill">${qty}</span>
+              </li>`
+      $('#items').append(mystr);
+  }
+  document.getElementById('cart').innerHTML = sum;
+  }
+
+
+</script>
 {% endblock  %}
